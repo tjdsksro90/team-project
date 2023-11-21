@@ -1,5 +1,5 @@
 import React from "react";
-import * as Styled from "../assets/BasicStyle";
+import * as Styled from "assets/BasicStyle";
 
 function Footer() {
   return (
