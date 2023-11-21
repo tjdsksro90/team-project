@@ -9,10 +9,10 @@ function Main() {
     console.log("app", app);
   }, []);
   return (
-    <MainStyled.BoxWrapBg>
-      <MainStyled.BoxWrap>
-        <MainStyled.BoxLeft>left : 로그인 정보 및 카테고리?</MainStyled.BoxLeft>
-        <MainStyled.BoxRight>
+    <Styled.BoxWrapBg>
+      <Styled.BoxWrap>
+        <Styled.BoxLeft>left : 로그인 정보 및 카테고리?</Styled.BoxLeft>
+        <Styled.BoxRight>
           <Styled.BoxBtn line="line" width="100%">
             확인용 박스
           </Styled.BoxBtn>
@@ -27,9 +27,9 @@ function Main() {
             </span>
           </Styled.FlexCenter>
           <Styled.Line></Styled.Line>
-        </MainStyled.BoxRight>
-      </MainStyled.BoxWrap>
-    </MainStyled.BoxWrapBg>
+        </Styled.BoxRight>
+      </Styled.BoxWrap>
+    </Styled.BoxWrapBg>
   );
 }
 
