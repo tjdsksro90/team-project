@@ -1,6 +1,7 @@
 import Button from "components/common/Button";
 import React from "react";
 import styled from "styled-components";
+import avatar from "assets/images/avatar.png"
 
 const RegisterPage = () => {
   return (
@@ -62,12 +63,13 @@ const InputId = styled.div`
   &::before {
     content: "";
     position: absolute;
-    top: 0;
+    top: 15px;
     left: 10px;
     background-repeat: no-repeat;
     width: 30px;
     height: 30px;
-    background-image:url(assets/images/avatar.png);
+    background-image:url("https://github.com/tjdsksro90/team-project/blob/kimjiye/src/assets/images/avatar.png?raw=true");
+    background-size: 20px;
   }
   &::after {
   }
