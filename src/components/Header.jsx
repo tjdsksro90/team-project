@@ -11,8 +11,13 @@ function Header() {
         </h1>
         <Styled.InputStyle type="text" placeholder="검색하기" color={Styled.mainColor} />
         <Styled.BtnWrapMLAuto>
+          <Link to="/Login">
           <Styled.MainBtn line="line">로그인</Styled.MainBtn>
-          <Styled.MainBtn>회원가입</Styled.MainBtn>
+          </Link>
+          <Link to="/register">
+            <Styled.MainBtn>회원가입</Styled.MainBtn>
+          </Link>
+         
         </Styled.BtnWrapMLAuto>
       </Styled.HeaderStyle>
     </Styled.HeaderBgStyle>

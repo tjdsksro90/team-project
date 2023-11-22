@@ -18,9 +18,6 @@ const Login = () => {
 
   return (
     <Container>
-      <CloseBtnBox>
-        <IoClose />
-      </CloseBtnBox>
       <LoginWrapper>
         <LogoWrapper>로고박스</LogoWrapper>
         <LoginBox>
