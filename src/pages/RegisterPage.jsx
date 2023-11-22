@@ -1,27 +1,64 @@
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import Button from "components/common/Button";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 
-const RegisterPage = () => {
+const RegisterPage = (props) => {
+  const auth = getAuth();
+  const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
+
+  const onJoinHanlder = (event) => {
+    const {
+      target: { name, value }
+    } = event;
+    if (name === "email") {
+      setEmail(value);
+    }
+    if (name === "password") {
+      setPassword(value);
+    }
+  };
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+
+      navigate("/login");
+    } catch (error) {
+      alert("가입 실패" + error.message);
+    }
+  };
+
   return (
     <Container>
       <LogoBox>
         <Title>회원가입</Title>
       </LogoBox>
-      <JoinForm>
-        <InputId>
-          <input type="id" placeholder="아이디" />
-        </InputId>
-        <input type="password" placeholder="비밀번호" />
-        <input type="email" placeholder="이메일" />
-        <InputName>
-          <input type="text" placeholder="이름" />
-        </InputName>
-        <input type="text" placeholder="생년월일" />
-      </JoinForm>
+      <FormWrapper>
+        <JoinForm onSubmit={onSubmitHandler}>
+          <InputEmail>
+            <input type="email" value={email} onChange={onJoinHanlder} name="email" placeholder="이메일" />
+          </InputEmail>
+          <InputPw>
+            <input
+              type="password"
+              value={password}
+              onChange={onJoinHanlder}
+              name="password"
+              autoComplete="off"
+              placeholder="비밀번호"
+            />
+          </InputPw>
 
-        <Button text="회원가입"/>
-
+          <Button text="회원가입" />
+        </JoinForm>
+      </FormWrapper>
     </Container>
   );
 };
@@ -36,7 +73,12 @@ const Container = styled.section`
   align-items: center;
   max-width: 1200px;
 `;
-const LogoBox = styled.div``;
+const LogoBox = styled.div`
+  width: 100%;
+  margin-top: 8rem;
+  display: flex;
+  justify-content: center;
+`;
 const Title = styled.h3`
   font-size: 24px;
   font-weight: bold;
@@ -45,7 +87,7 @@ const JoinForm = styled.form`
   display: flex;
   flex-direction: column;
   padding-top: 30px;
-  width: 420px;
+  width: 250px;
   border-color: #6c6c6e;
   & input {
     width: 100%;
@@ -56,8 +98,7 @@ const JoinForm = styled.form`
     height: 50px;
   }
 `;
-
-const InputId = styled.div`
+const InputPw = styled.div`
   position: relative;
   &::before {
     content: "";
@@ -67,12 +108,27 @@ const InputId = styled.div`
     background-repeat: no-repeat;
     width: 30px;
     height: 30px;
-    background-image:url("https://github.com/tjdsksro90/team-project/blob/kimjiye/src/assets/images/avatar.png?raw=true");
+    background-image: url("https://github.com/tjdsksro90/team-project/blob/kimjiye/src/assets/images/lock.png?raw=true");
     background-size: 20px;
   }
-  &::after {
+`;
+const InputEmail = styled.div`
+  position: relative;
+  margin-bottom: 8px;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    background-image: url("https://github.com/tjdsksro90/team-project/blob/kimjiye/src/assets/images/mail.png?raw=true");
+    background-size: 20px;
   }
 `;
-const InputName = styled.div`
-  margin-top: 20px;
+const FormWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
