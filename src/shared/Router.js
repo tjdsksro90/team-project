@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "shared/Layout";
 import GlobalStyle from "assets/GlobalStyle";
 import Login from "pages/Login";
-import reset from 'assets/reset.css'
 import RegisterPage from "pages/RegisterPage";
 
 const Router = () => {
