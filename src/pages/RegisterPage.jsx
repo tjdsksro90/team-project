@@ -1,7 +1,6 @@
 import Button from "components/common/Button";
 import React from "react";
 import styled from "styled-components";
-import avatar from "assets/images/avatar.png"
 
 const RegisterPage = () => {
   return (
