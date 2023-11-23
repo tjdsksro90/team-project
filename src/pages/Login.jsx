@@ -1,16 +1,17 @@
 import styled from "styled-components";
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import Button from "components/common/Button";
-import GoogleButton from "GoogleButton";
+import GoogleButton from "components/common/GoogleButton";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom/dist";
-import { loginUser} from "redux/modules/user";
-
+import { loginUser } from "redux/modules/user";
+import FoundModal from "components/common/FoundModal";
 
 const Login = () => {
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [modal, setModal] = useState(false)
   const auth = getAuth();
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   const GOOGLE_REDIRECT_URI = process.env.REACT_APP_GOOGLE_REDIRECT_URI;
@@ -20,35 +21,30 @@ const Login = () => {
   };
 
   const dispatch = useDispatch();
-  const user = useSelector((state)=>state.user.user)
-  const error = useSelector((state)=>state.user.error)
-  //
+  
+
   const onChangeHanlder = (e) => {
-    const {target : {name, value}} = e;
-    if(name === "email") setUserId(value);
-    if(name==="password") setUserPassword(value)
+    const {
+      target: { name, value }
+    } = e;
+    if (name === "email") setUserId(value);
+    if (name === "password") setUserPassword(value);
   };
 
-  const onLoginSubmit = async(e) => {
+  const onLoginSubmit = async (e) => {
     e.preventDefault();
 
-    try{
-      const userCredential = await signInWithEmailAndPassword(auth, userId, userPassword)
-        dispatch(loginUser(userCredential.user))
-      //1.console.log(registerSuccess) 찍어보고 어떤 값을 관리해야할지 넣기
-        alert("로그인 되었습니다")
-    }catch (error) {
-
-      alert("로그인 실패: " + error.message); }
-      setUserId("");
-    setUserPassword("");
-    
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, userId, userPassword);
+      dispatch(loginUser(userCredential.user));
+      alert("로그인 되었습니다");
+    } catch (error) {
+      alert("로그인 실패: " + error.message);
     }
-    //1 firebase 통신
-    //2 통신결과를 response로 받기
-    //3 받은 결과를 리덕스에 저장하기(dispatch)
+    setUserId("");
+    setUserPassword("");
+  };
 
-    
   return (
     <Container>
       <LoginWrapper>
@@ -68,9 +64,6 @@ const Login = () => {
             />
           </label>
 
-          <ForgetPW>
-            <Link to="/">비밀번호 찾기</Link>
-          </ForgetPW>
           <ButtonWrapper>
             <Button text="로그인" type="submit" />
           </ButtonWrapper>
@@ -81,9 +74,11 @@ const Login = () => {
           </Link>
 
           <span>ㅣ</span>
-          <Link to="/">
-            <p>아이디 찾기</p>
-          </Link>
+
+          
+            <button onClick={()=>setModal(true)}>비밀번호 찾기</button>
+          
+          {modal === true ? <FoundModal setModal={setModal}/>: null}
         </JoinandFind>
         <SimpleLogin>
           <GoogleButton />
@@ -121,18 +116,6 @@ const LoginBox = styled.form`
     margin-top: 8px;
     padding: 13px 73px 13px 16px;
     width: 250px;
-  }
-`;
-const ForgetPW = styled.div`
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: -0.4px;
-  line-height: 1.62;
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 8px;
-  & a {
-    color: #999;
   }
 `;
 

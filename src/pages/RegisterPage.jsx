@@ -1,16 +1,17 @@
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import Button from "components/common/Button";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
+import {useremail} from "redux/modules/user"
 
 const RegisterPage = (props) => {
   const auth = getAuth();
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const dispatch = useDispatch();
+  const dispatch = useDispatch('')
 
   const onJoinHanlder = (event) => {
     const {
@@ -28,8 +29,10 @@ const RegisterPage = (props) => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-
+      console.log(email)
+      dispatch(useremail(email))
       navigate("/login");
+      alert("가입 되었습니다.")
     } catch (error) {
       alert("가입 실패" + error.message);
     }
