@@ -9,6 +9,8 @@ margin:10px 0;
   width: 250px;
   & button {
     border: 1px solid #cdcdcd;
+    color: white;
+    background-color: #3747ff;
     border-radius: 24px;
     font-size: 14px;
     font-weight: 700;
