@@ -1,8 +1,28 @@
+import { onAuthStateChanged, signOut } from "@firebase/auth";
 import * as Styled from "assets/BasicStyle";
-import React from "react";
+import { auth } from "../firebase";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Header() {
+  const [userTab, setUserTab] = useState(false);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log("user", user); // 사용자 인증 정보가 변경될 때마다 해당 이벤트를 받아 처리합니다.
+      if (user === null) {
+        setUserTab(false);
+      } else {
+        setUserTab(true);
+      }
+    });
+  }, []);
+
+  // 로그아웃
+  const logOut = async (event) => {
+    await signOut(auth);
+  };
+
   return (
     <Styled.HeaderBgStyle>
       <Styled.HeaderStyle>
@@ -18,13 +38,25 @@ function Header() {
         </h1>
         <Styled.InputStyle type="text" placeholder="검색하기" color={Styled.mainColor} />
         <Styled.BtnWrapMLAuto>
-          <Link to="/Login">
-          <Styled.MainBtn line="line">로그인</Styled.MainBtn>
-          </Link>
-          <Link to="/register">
-            <Styled.MainBtn>회원가입</Styled.MainBtn>
-          </Link>
-         
+          {userTab ? (
+            <>
+              <Styled.MainBtn line="line" onClick={() => logOut()}>
+                로그아웃
+              </Styled.MainBtn>
+              <Link to="/mypage">
+                <Styled.MainBtn>마이페이지</Styled.MainBtn>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/Login">
+                <Styled.MainBtn line="line">로그인</Styled.MainBtn>
+              </Link>
+              <Link to="/register">
+                <Styled.MainBtn>회원가입</Styled.MainBtn>
+              </Link>
+            </>
+          )}
         </Styled.BtnWrapMLAuto>
       </Styled.HeaderStyle>
     </Styled.HeaderBgStyle>

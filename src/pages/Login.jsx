@@ -3,13 +3,15 @@ import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import Button from "components/common/Button";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom/dist";
+import { Link, useNavigate } from "react-router-dom/dist";
 import { loginUser } from "redux/modules/user";
 import FoundModal from "pages/FoundModal";
 import GithubLogin from "./GithubLogin";
 import GoogleLogin from "./GoogleLogin";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [modal, setModal] = useState(false);
@@ -32,6 +34,7 @@ const Login = () => {
       const userCredential = await signInWithEmailAndPassword(auth, userId, userPassword);
       dispatch(loginUser(userCredential.user));
       alert("로그인 되었습니다");
+      navigate("/");
     } catch (error) {
       alert("로그인 실패: " + error.message);
     }
@@ -79,11 +82,9 @@ const Login = () => {
           {modal === true ? <FoundModal setModal={setModal} /> : null}
         </JoinandFind>
         <SocialLoginBox>
-        <GithubLogin/>
-          <GoogleLogin/>
-
+          <GithubLogin />
+          <GoogleLogin />
         </SocialLoginBox>
-          
       </LoginWrapper>
     </Container>
   );
@@ -143,4 +144,4 @@ const JoinandFind = styled.div`
 const SocialLoginBox = styled.div`
   margin-top: 12px;
   display: flex;
-`
+`;
