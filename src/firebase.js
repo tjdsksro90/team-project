@@ -1,19 +1,18 @@
 import { initializeApp } from "firebase/app";
-import { getAuth,GithubAuthProvider, GoogleAuthProvider  } from "firebase/auth";
+import { getAuth, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyA0aCaK1nNNc5Vlsb2L1X0B0DfDy1Vf7T0",
-  authDomain: "melodic-scarab-405810.firebaseapp.com",
-  projectId: "melodic-scarab-405810",
-  storageBucket: "melodic-scarab-405810.appspot.com",
-  messagingSenderId: "804113997694",
-  appId: "1:804113997694:web:df739eed5ca0fae94d1d2f",
-  measurementId: "G-0MCQDMJNZ0"
+  apiKey: process.env.REACT_APP_FB_API_KEY,
+  authDomain: process.env.REACT_APP_FB_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const githubProvider = new GithubAuthProvider();
 const googleProvider = new GoogleAuthProvider();
-export { app, auth,githubProvider,googleProvider};
+export { app, auth, githubProvider, googleProvider };
