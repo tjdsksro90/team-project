@@ -5,13 +5,13 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FB_API_KEY,
-  authDomain: process.env.REACT_APP_FB_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID
+  apiKey: "AIzaSyAFGQkXUxiHszK_0QQ0bhFWtedYiOLAfBQ",
+  authDomain: "fir-project-d8eec.firebaseapp.com",
+  projectId: "fir-project-d8eec",
+  storageBucket: "fir-project-d8eec.appspot.com",
+  messagingSenderId: "670949353358",
+  appId: "1:670949353358:web:8f5150b94cd1be4e50a6df"
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig); // firebase 사용하기
+const app = initializeApp(firebaseConfig); //eslint-disable-line no-unused-vars
