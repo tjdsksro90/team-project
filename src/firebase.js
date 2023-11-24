@@ -1,12 +1,7 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 
-// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FB_API_KEY,
   authDomain: process.env.REACT_APP_FB_AUTH_DOMAIN,
@@ -16,8 +11,8 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID
 };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig); // firebase 사용하기
-export const auth = getAuth(app); // Authentication 사용
-export const db = getFirestore(app); // Cloud Firestore 사용
-export const storage = getStorage(app); // Storage 사용
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const githubProvider = new GithubAuthProvider();
+const googleProvider = new GoogleAuthProvider();
+export { app, auth, githubProvider, googleProvider };

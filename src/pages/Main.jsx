@@ -1,6 +1,6 @@
 import * as Styled from "assets/BasicStyle";
 import * as MainStyled from "assets/main/index";
-import { app } from "../firebase";
+import { app } from "../firebase"
 import React, { useEffect } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
 
