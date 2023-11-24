@@ -1,8 +1,10 @@
 import { auth, googleProvider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 
 function GoogleLogin() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   const handleGoogleLogin = () => {
@@ -10,6 +12,7 @@ function GoogleLogin() {
       .then((result) => {
         const user = result.user;
         setUser(user);
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
