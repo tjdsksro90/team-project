@@ -1,27 +1,21 @@
 import styled from "styled-components";
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import Button from "components/common/Button";
-import GoogleButton from "components/common/GoogleButton";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom/dist";
 import { loginUser } from "redux/modules/user";
-import FoundModal from "components/common/FoundModal";
+import FoundModal from "pages/FoundModal";
+import GithubLogin from "./GithubLogin";
+import GoogleLogin from "./GoogleLogin";
 
 const Login = () => {
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(false);
   const auth = getAuth();
-  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-  const GOOGLE_REDIRECT_URI = process.env.REACT_APP_GOOGLE_REDIRECT_URI;
-
-  const onGoogleSocialLogin = () => {
-    window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=openid email profile`;
-  };
 
   const dispatch = useDispatch();
-  
 
   const onChangeHanlder = (e) => {
     const {
@@ -44,7 +38,12 @@ const Login = () => {
     setUserId("");
     setUserPassword("");
   };
+  /* 
+1.리덕스는 데이터베이스에 직접저장X 새로고침하면 데이터 사라짐, 방지하는 방법 : redux-persist <저장한 값을 휘발되지 않도록 막아줌 
+2.firebase auth =>로그인을 한 상태인지 안한상태인지 체크하는 api , 라우터 최상단에 로그인이 된유저인지 아닌지 검증 
+로그인 시도했을 때 < 
 
+*/
   return (
     <Container>
       <LoginWrapper>
@@ -75,14 +74,16 @@ const Login = () => {
 
           <span>ㅣ</span>
 
-          
-            <button onClick={()=>setModal(true)}>비밀번호 찾기</button>
-          
-          {modal === true ? <FoundModal setModal={setModal}/>: null}
+          <button onClick={() => setModal(true)}>비밀번호 찾기</button>
+
+          {modal === true ? <FoundModal setModal={setModal} /> : null}
         </JoinandFind>
-        <SimpleLogin>
-          <GoogleButton />
-        </SimpleLogin>
+        <SocialLoginBox>
+        <GithubLogin/>
+          <GoogleLogin/>
+
+        </SocialLoginBox>
+          
       </LoginWrapper>
     </Container>
   );
@@ -139,5 +140,7 @@ const JoinandFind = styled.div`
     margin: 0 8px;
   }
 `;
-
-const SimpleLogin = styled.form``;
+const SocialLoginBox = styled.div`
+  margin-top: 12px;
+  display: flex;
+`
