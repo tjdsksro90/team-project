@@ -29,8 +29,9 @@ const RegisterPage = (props) => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      console.log(email)
+      console.log(email) //오류없이 여기까지는 찍힘 
       dispatch(useremail(email))
+      console.log(email)
       navigate("/login");
       alert("가입 되었습니다.")
     } catch (error) {
