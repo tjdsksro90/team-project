@@ -27,39 +27,40 @@ const customModal = {
 };
 
 function Mypage() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       console.log("user", user); // 사용자 인증 정보가 변경될 때마다 해당 이벤트를 받아 처리합니다.
-      // if(user === null) return navigate("/"); // 비로그인시 로그인페이지로
-      // else {
-      signIn();
-      setUserId(user.uid);
-      setProfileEmail(user.email);
-      setProfileName(user.displayName);
-      setProfileImg(user.photoURL);
-      console.log(user.photoURL, "여기1");
-      //   if (user !== null) {
-      //     const displayName = user.displayName;
-      // const email = user.email;
-      // const photoURL = user.photoURL;
-      // const emailVerified = user.emailVerified;
-      // const uid = user.uid;
-      //   }
-      // }
+      if (user === null) return navigate("/"); // 비로그인시 로그인페이지로
+      else {
+        // signIn();
+        setUserId(user.uid);
+        setProfileEmail(user.email);
+        setProfileName(user.displayName);
+        setProfileImg(user.photoURL);
+        //   if (user !== null) {
+        //     const displayName = user.displayName;
+        // const email = user.email;
+        // const photoURL = user.photoURL;
+        // const emailVerified = user.emailVerified;
+        // const uid = user.uid;
+        //   }
+      }
     });
     // const user = auth.currentUser
   }, []);
 
   // 로그인
-  const signIn = async (event) => {
-    // event.preventDefault();
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, "tjdsksro90@gmail.com", "as1257845");
-      console.log(userCredential, "userCredential");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const signIn = async (event) => {
+  //   // event.preventDefault();
+  //   try {
+  //     const userCredential = await signInWithEmailAndPassword(auth, "tjdsksro90@gmail.com", "as1257845");
+  //     console.log(userCredential, "userCredential");
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   // 사용자 프로필 업데이트
   const updateProfileHandler = async (editName, downloadURL) => {
