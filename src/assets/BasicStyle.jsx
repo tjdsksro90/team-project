@@ -144,9 +144,21 @@ export const HeaderStyle = styled.div`
   align-items: center;
   gap: 30px;
   h1 {
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 28px;
     font-size: 10px;
+    > a {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      svg {
+        width: 100%;
+        height: 100%;
+        path {
+          fill: ${mainColor.dark};
+        }
+      }
+    }
   }
 `;
 
@@ -187,6 +199,14 @@ export const BoxWrap = styled.div`
     flex-wrap: wrap;
     gap: 20px;
   }
+`;
+
+export const BoxWrapBasic = styled.div`
+  max-width: 1280px;
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  top: 100px;
 `;
 
 export const BoxLeft = styled.div`
