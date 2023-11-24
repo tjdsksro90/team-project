@@ -1,12 +1,18 @@
 import * as Styled from "assets/BasicStyle";
 import * as MainStyled from "assets/main/index";
-import { app } from "../firebase"
 import React, { useEffect } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
+import { app } from "../firebase";
+import Test from "../components/Test";
+import Write from "../components/Write";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 
 function Main() {
   useEffect(() => {
-    console.log("app", app);
+    onAuthStateChanged(auth, (user) => {
+      console.log("user", user); // 사용자 인증 정보가 변경될 때마다 해당 이벤트를 받아 처리합니다.
+    });
   }, []);
   return (
     <Styled.BoxWrapBg>
@@ -26,6 +32,7 @@ function Main() {
               <AiFillCheckCircle />
             </span>
           </Styled.FlexCenter>
+          <Write></Write>
           <Styled.Line></Styled.Line>
         </Styled.BoxRight>
       </Styled.BoxWrap>
