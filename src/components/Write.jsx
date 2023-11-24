@@ -90,13 +90,13 @@ const Write = () => {
   const addWrite = async (event) => {
     event.preventDefault();
     const newWrite = { text: text };
+    const collectionRef = collection(db, "writes");
+    const a = await addDoc(collectionRef, newWrite);
+    console.log("a", a.id);
     setWrites((prev) => {
-      return [...writes, newWrite];
+      return [...writes, { ...newWrite, id: a.id }];
     });
     setText("");
-
-    const collectionRef = collection(db, "writes");
-    await addDoc(collectionRef, newWrite);
   };
 
   return (

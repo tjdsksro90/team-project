@@ -14,6 +14,7 @@ const StDeletButton = styled.button`
 `;
 const Writeitem = ({ write, setWrites }) => {
   const deleteWrite = async (event) => {
+    console.log("write", write);
     const writeRef = doc(db, "writes", write.id);
     await deleteDoc(writeRef);
 
