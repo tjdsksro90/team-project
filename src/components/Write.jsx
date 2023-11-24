@@ -3,6 +3,8 @@ import Writeitem from "./Writeitem";
 import { collection, query, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import styled from "styled-components";
+import { auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const StInputWrite = styled.input`
   width: 100%;
@@ -34,7 +36,6 @@ const StTest = styled.div`
   width: 100%;
   height: 200px;
   margin: 10px;
-  /* white-space: normal; */
   word-wrap: break-word;
   display: -webkit-box;
   line-height: 1.2;
@@ -44,26 +45,32 @@ const StTest = styled.div`
 `;
 
 const Write = () => {
-  const [todos, setTodos] = useState([
+  const [writes, setWrites] = useState([
     { text: "할 일 1", id: 1 },
     { text: "할 일 2", id: 2 }
   ]);
 
+  // onAuthStateChanged(auth, (user) => {
+  //   console.log("user1", user.uid);
+  // });
+  // 파이어 베이스 데이터 읽기
   useEffect(() => {
     const fetchData = async () => {
-      const q = query(collection(db, "todos"));
+      const q = query(collection(db, "writes"));
       const querySnapshot = await getDocs(q);
 
-      const initialTodos = [];
+      const initialWrites = [];
 
       querySnapshot.forEach((doc) => {
         const data = {
           id: doc.id,
           ...doc.data()
         };
-        initialTodos.push(data);
+        // console.log("data", data);
+        // console.log("doc", doc);
+        initialWrites.push(data);
       });
-      setTodos(initialTodos);
+      setWrites(initialWrites);
     };
     fetchData();
   }, []);
@@ -79,16 +86,17 @@ const Write = () => {
     }
   };
 
-  const addTodo = async (event) => {
+  // 파이어 베이스 데이터 추가
+  const addWrite = async (event) => {
     event.preventDefault();
-    const newTodo = { text: text };
-    setTodos((prev) => {
-      return [...todos, newTodo];
+    const newWrite = { text: text };
+    setWrites((prev) => {
+      return [...writes, newWrite];
     });
     setText("");
 
-    const collectionRef = collection(db, "todos");
-    await addDoc(collectionRef, newTodo);
+    const collectionRef = collection(db, "writes");
+    await addDoc(collectionRef, newWrite);
   };
 
   return (
@@ -104,26 +112,17 @@ const Write = () => {
             placeholder="내용을 입력해주세요"
             required
           ></StInputWrite>
-          <StWriteButton onClick={addTodo}>입력</StWriteButton>
+          <StWriteButton onClick={addWrite}>입력</StWriteButton>
         </StWriteWrap>
       </form>
       <h3>내용</h3>
-      {todos
-        // .filter((todo) => !todo.isDone)
-        .map((todo) => {
-          return (
-            <StTest>
-              <Writeitem key={todo.id} todo={todo} setTodos={setTodos} />
-            </StTest>
-          );
-        })}
-
-      {/* <h3>Done</h3>
-      {todos
-        .filter((todo) => todo.isDone)
-        .map((todo) => {
-          return <Writeitem key={todo.id} todo={todo} setTodos={setTodos} />;
-        })} */}
+      {writes.map((write) => {
+        return (
+          <StTest>
+            <Writeitem key={write.id} write={write} setWrites={setWrites} />
+          </StTest>
+        );
+      })}
     </div>
   );
 };

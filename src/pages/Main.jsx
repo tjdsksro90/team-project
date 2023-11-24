@@ -32,7 +32,7 @@ function Main() {
               <AiFillCheckCircle />
             </span>
           </Styled.FlexCenter>
-          {/* <Test></Test> */}
+          <Test></Test>
           <Write></Write>
           <Styled.Line></Styled.Line>
         </Styled.BoxRight>

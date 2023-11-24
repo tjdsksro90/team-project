@@ -12,37 +12,21 @@ const StDeletButton = styled.button`
   font-size: 14px;
   font-weight: bold;
 `;
-const Writeitem = ({ todo, setTodos }) => {
-  // const updateTodo = async (event) => {
-  //   const todoRef = doc(db, "todos", todo.id);
-  //   await updateDoc(todoRef, { ...todo, isDone: !todo.isDone });
+const Writeitem = ({ write, setWrites }) => {
+  const deleteWrite = async (event) => {
+    const writeRef = doc(db, "writes", write.id);
+    await deleteDoc(writeRef);
 
-  //   setTodos((prev) => {
-  //     return prev.map((element) => {
-  //       if (element.id === todo.id) {
-  //         return { ...element, isDone: !element.isDone };
-  //       } else {
-  //         return element;
-  //       }
-  //     });
-  //   });
-  // };
-
-  const deleteTodo = async (event) => {
-    const todoRef = doc(db, "todos", todo.id);
-    await deleteDoc(todoRef);
-
-    setTodos((prev) => {
-      return prev.filter((element) => element.id !== todo.id);
+    setWrites((prev) => {
+      return prev.filter((element) => element.id !== write.id);
     });
   };
 
   return (
-    <div key={todo.id}>
+    <div key={write.id}>
       <span>
-        {todo.text}
-        {/* <button onClick={updateTodo}>{todo.isDone ? "취소" : "완료"}</button> */}
-        <StDeletButton onClick={deleteTodo}>X</StDeletButton>
+        {write.text}
+        <StDeletButton onClick={deleteWrite}>X</StDeletButton>
       </span>
     </div>
   );
