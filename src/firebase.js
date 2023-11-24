@@ -1,3 +1,5 @@
+import { getFirestore } from "@firebase/firestore";
+import { getStorage } from "@firebase/storage";
 import { initializeApp } from "firebase/app";
 import { getAuth, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 
@@ -11,8 +13,10 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const app = initializeApp(firebaseConfig); // firebase 사용하기
+const auth = getAuth(app); // Authentication 사용
+const db = getFirestore(app); // Cloud Firestore 사용
+const storage = getStorage(app); // Storage 사용
 const githubProvider = new GithubAuthProvider();
 const googleProvider = new GoogleAuthProvider();
-export { app, auth, githubProvider, googleProvider };
+export { app, auth, db, storage, githubProvider, googleProvider };
