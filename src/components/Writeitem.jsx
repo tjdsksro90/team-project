@@ -2,6 +2,7 @@ import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import React from "react";
 import { db } from "../firebase";
 import styled from "styled-components";
+import { element } from "prop-types";
 
 const StDeletButton = styled.button`
   position: absolute;
@@ -12,7 +13,19 @@ const StDeletButton = styled.button`
   font-size: 14px;
   font-weight: bold;
 `;
-// [write.id, write.text, write.date];
+
+const StId = styled.input`
+  border: 0px;
+  font-size: small;
+  font-weight: bolder;
+  float: left;
+`;
+
+const StDate = styled.div`
+  display: inline-block;
+  float: right;
+`;
+
 const Writeitem = ({ write, setWrites }) => {
   const deleteWrite = async (event) => {
     const writeRef = doc(db, "writes", write.id);
@@ -23,11 +36,14 @@ const Writeitem = ({ write, setWrites }) => {
     });
   };
 
+  console.log("id", write.id);
+  console.log("email", write.email);
+
   return (
     <div key={write.id}>
       <span>
-        <input value={write.email} disabled></input> {write.date}
-        {/* {write.id} */}
+        <StId value={write.email} disabled></StId>
+        <StDate>{write.date}</StDate>
         <br />
         {write.text}
         <StDeletButton onClick={deleteWrite}>X</StDeletButton>

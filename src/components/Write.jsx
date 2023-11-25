@@ -27,8 +27,8 @@ const StWriteButton = styled.button`
   font-size: 17px;
   position: absolute;
   border-radius: 10px;
-  right: -14px;
-  top: 8%;
+  right: 1px;
+  top: 9%;
   cursor: pointer;
   padding: 3px 5px;
 `;
@@ -45,8 +45,8 @@ const StTest = styled.div`
   word-wrap: break-word;
   display: -webkit-box;
   line-height: 1.2;
-  height: 9em;
-  -webkit-line-clamp: 8;
+  height: 8.8em;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
 `;
 
