@@ -12,9 +12,9 @@ const StDeletButton = styled.button`
   font-size: 14px;
   font-weight: bold;
 `;
+// [write.id, write.text, write.date];
 const Writeitem = ({ write, setWrites }) => {
   const deleteWrite = async (event) => {
-    console.log("write", write);
     const writeRef = doc(db, "writes", write.id);
     await deleteDoc(writeRef);
 
@@ -26,6 +26,9 @@ const Writeitem = ({ write, setWrites }) => {
   return (
     <div key={write.id}>
       <span>
+        <input value={write.email} disabled></input> {write.date}
+        {/* {write.id} */}
+        <br />
         {write.text}
         <StDeletButton onClick={deleteWrite}>X</StDeletButton>
       </span>
