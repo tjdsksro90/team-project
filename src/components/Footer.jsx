@@ -6,8 +6,7 @@ function Footer() {
   return (
     <Styled.FooterBgStyle>
       <Styled.FooterStyle>
-        copyright @B-8
-        <div>
+        <Styled.MemberWrapper>
           {memeber.map((item) => {
             return (
               <ul key={item}>
@@ -15,7 +14,8 @@ function Footer() {
               </ul>
             );
           })}
-        </div>
+        </Styled.MemberWrapper>
+        copyright @B-8
       </Styled.FooterStyle>
     </Styled.FooterBgStyle>
   );
