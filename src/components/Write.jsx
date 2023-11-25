@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Writeitem from "./Writeitem";
-import { collection, query, getDocs, addDoc } from "firebase/firestore";
+import { collection, query, getDocs, addDoc, Timestamp, orderBy } from "firebase/firestore";
 import { db } from "../firebase";
 import styled from "styled-components";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import Test from "./Test";
+import moment from "moment/moment";
 
 const StInputWrite = styled.input`
   width: 100%;
@@ -50,13 +52,10 @@ const Write = () => {
     { text: "할 일 2", id: 2 }
   ]);
 
-  // onAuthStateChanged(auth, (user) => {
-  //   console.log("user1", user.uid);
-  // });
   // 파이어 베이스 데이터 읽기
   useEffect(() => {
     const fetchData = async () => {
-      const q = query(collection(db, "writes"));
+      const q = query(collection(db, "writes"), orderBy("fullDate", "desc"));
       const querySnapshot = await getDocs(q);
 
       const initialWrites = [];
@@ -88,13 +87,16 @@ const Write = () => {
 
   // 파이어 베이스 데이터 추가
   const addWrite = async (event) => {
+    const formatDate = moment().format("YYYY-MM-DD");
+    const formatFullDate = moment().format("YYYY-MM-DD HH-mm-ss.SSS");
     event.preventDefault();
-    const newWrite = { text: text };
+    const newWrite = { email: auth.currentUser.email, text: text, date: formatDate, fullDate: formatFullDate };
+    console.log("data", formatDate);
     const collectionRef = collection(db, "writes");
     const a = await addDoc(collectionRef, newWrite);
-    console.log("a", a.id);
+    console.log("a", a);
     setWrites((prev) => {
-      return [...writes, { ...newWrite, id: a.id }];
+      return [{ ...newWrite, id: a.id }, ...writes];
     });
     setText("");
   };

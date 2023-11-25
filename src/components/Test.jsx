@@ -9,6 +9,10 @@ const Test = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const newUser = () => {
+    onAuthStateChanged(auth, (user) => {});
+  };
+
   const onChange = (event) => {
     const {
       target: { name, value }
@@ -37,6 +41,7 @@ const Test = () => {
     event.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
       console.log("user", userCredential.user);
     } catch (error) {
       const errorCode = error.code;
