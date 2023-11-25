@@ -1,32 +1,38 @@
 import React, { useEffect, useState } from "react";
 import Writeitem from "./Writeitem";
-import { collection, query, getDocs, addDoc } from "firebase/firestore";
+import { collection, query, getDocs, addDoc, Timestamp, orderBy } from "firebase/firestore";
 import { db } from "../firebase";
 import styled from "styled-components";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import Test from "./Test";
+import moment from "moment/moment";
+
+const StWriteWrap = styled.div`
+  position: relative;
+`;
 
 const StInputWrite = styled.input`
   width: 100%;
   height: 40px;
   border-radius: 10px;
+  padding: 0px 10px 0px 10px;
   border: 0px;
   background-color: #bac4cc;
 `;
-const StWriteWrap = styled.div`
-  position: relative;
-`;
+
 const StWriteButton = styled.button`
   background-color: #bac4cc;
   border: 0px;
   font-size: 17px;
   position: absolute;
   border-radius: 10px;
-  right: -4px;
-  top: 0%;
+  right: -14px;
+  top: 8%;
   cursor: pointer;
-  padding: 8px;
+  padding: 3px 5px;
 `;
+
 const StTest = styled.div`
   position: relative;
   overflow: hidden;
@@ -35,7 +41,7 @@ const StTest = styled.div`
   padding: 20px 10px 10px 10px;
   width: 100%;
   height: 200px;
-  margin: 10px;
+  margin: 10px 0px;
   word-wrap: break-word;
   display: -webkit-box;
   line-height: 1.2;
@@ -45,18 +51,12 @@ const StTest = styled.div`
 `;
 
 const Write = () => {
-  const [writes, setWrites] = useState([
-    { text: "할 일 1", id: 1 },
-    { text: "할 일 2", id: 2 }
-  ]);
+  const [writes, setWrites] = useState([]);
 
-  // onAuthStateChanged(auth, (user) => {
-  //   console.log("user1", user.uid);
-  // });
   // 파이어 베이스 데이터 읽기
   useEffect(() => {
     const fetchData = async () => {
-      const q = query(collection(db, "writes"));
+      const q = query(collection(db, "writes"), orderBy("fullDate", "desc"));
       const querySnapshot = await getDocs(q);
 
       const initialWrites = [];
@@ -66,8 +66,7 @@ const Write = () => {
           id: doc.id,
           ...doc.data()
         };
-        // console.log("data", data);
-        // console.log("doc", doc);
+
         initialWrites.push(data);
       });
       setWrites(initialWrites);
@@ -88,15 +87,20 @@ const Write = () => {
 
   // 파이어 베이스 데이터 추가
   const addWrite = async (event) => {
+    const formatDate = moment().format("YYYY-MM-DD");
+    const formatFullDate = moment().format("YYYY-MM-DD HH-mm-ss.SSS");
     event.preventDefault();
-    const newWrite = { text: text };
-    const collectionRef = collection(db, "writes");
-    const a = await addDoc(collectionRef, newWrite);
-    console.log("a", a.id);
-    setWrites((prev) => {
-      return [...writes, { ...newWrite, id: a.id }];
-    });
-    setText("");
+    if (text === "") {
+      alert("내용을 입력해주세요");
+    } else {
+      const newWrite = { email: auth.currentUser.email, text: text, date: formatDate, fullDate: formatFullDate };
+      const collectionRef = collection(db, "writes");
+      const a = await addDoc(collectionRef, newWrite);
+      setWrites((prev) => {
+        return [{ ...newWrite, id: a.id }, ...writes];
+      });
+      setText("");
+    }
   };
 
   return (

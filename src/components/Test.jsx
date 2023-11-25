@@ -9,6 +9,10 @@ const Test = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const newUser = () => {
+    onAuthStateChanged(auth, (user) => {});
+  };
+
   const onChange = (event) => {
     const {
       target: { name, value }
@@ -26,22 +30,18 @@ const Test = () => {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("user", userCredential.user);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log("error", errorCode, errorMessage);
     }
   };
   const signIn = async (event) => {
     event.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log("user", userCredential.user);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log("error", errorCode, errorMessage);
     }
   };
   const logOut = async (event) => {
