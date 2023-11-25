@@ -77,7 +77,7 @@ const Login = () => {
 
           <span>ㅣ</span>
 
-          <button onClick={() => setModal(true)}>비밀번호 찾기</button>
+          <PassWordBtn onClick={() => setModal(true)}>비밀번호 찾기</PassWordBtn>
 
           {modal === true ? <FoundModal setModal={setModal} /> : null}
         </JoinandFind>
@@ -103,6 +103,7 @@ const Container = styled.section`
 
 const LoginWrapper = styled.div`
   margin-top: 120px;
+  margin-bottom: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,15 +134,21 @@ const JoinandFind = styled.div`
   font-weight: 400;
   letter-spacing: -0.4px;
   line-height: 1.62;
+
+  & a {
+    text-decoration: none;
+  }
   & p {
     cursor: pointer;
     color: black;
-  }
-  & span {
-    margin: 0 8px;
   }
 `;
 const SocialLoginBox = styled.div`
   margin-top: 12px;
   display: flex;
+`;
+
+const PassWordBtn = styled.button`
+  border: none;
+  background-color: transparent;
 `;

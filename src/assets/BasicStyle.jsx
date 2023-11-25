@@ -164,6 +164,8 @@ export const HeaderStyle = styled.div`
 
 // footer
 export const FooterBgStyle = styled.footer`
+  z-index: 999;
+  margin-top: 40px;
   background-color: #fff;
   border-top: 1px solid ${mainColor.gray1};
 `;
@@ -172,7 +174,6 @@ export const FooterStyle = styled.div`
   padding: 0px 16px;
   width: 1280px;
   max-width: 90%;
-  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
