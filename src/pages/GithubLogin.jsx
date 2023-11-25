@@ -26,7 +26,11 @@ function GithubLogin() {
   return (
     <div>
       <Github onClick={handleGithubLogin}>
-        <img src="" alt="" />
+        <img
+          src="https://github.com/tjdsksro90/team-project/blob/merge/src/assets/images/github.png?raw=true"
+          alt="github"
+          width="40px"
+        />
       </Github>
     </div>
   );
@@ -35,5 +39,7 @@ function GithubLogin() {
 export default GithubLogin;
 
 const Github = styled.button`
-  width: 50px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;
