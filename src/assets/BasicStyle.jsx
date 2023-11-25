@@ -230,3 +230,14 @@ export const BoxRight = styled.div`
     margin-left: 0;
   }
 `;
+
+export const customModal = {
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    zIndex: 10
+  },
+  content: {
+    WebkitOverflowScrolling: "touch",
+    padding: "30px"
+  }
+};
