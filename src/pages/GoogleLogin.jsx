@@ -2,6 +2,7 @@ import { auth, googleProvider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import styled from "styled-components";
 
 function GoogleLogin() {
   const navigate = useNavigate();
@@ -19,19 +20,27 @@ function GoogleLogin() {
       });
   };
 
-  const handleGoogleLogOut = () => {
+  /*   const handleGoogleLogOut = () => {
     setUser(null);
   };
-
+ */
   return (
     <div>
-      {user ? (
-        <button onClick={handleGoogleLogOut}>google 로그아웃</button>
-      ) : (
-        <button onClick={handleGoogleLogin}>google 로그인</button>
-      )}
+      <GoogleButton onClick={handleGoogleLogin}>
+        <img
+          src="https://github.com/tjdsksro90/team-project/blob/merge/src/assets/images/google.png?raw=true"
+          alt="google"
+          width="40px"
+        />
+      </GoogleButton>
     </div>
   );
 }
 
 export default GoogleLogin;
+
+const GoogleButton = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
