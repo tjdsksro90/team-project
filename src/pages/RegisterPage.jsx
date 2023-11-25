@@ -1,17 +1,17 @@
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import Button from "components/common/Button";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import {useremail} from "redux/modules/user"
+import { useremail } from "redux/modules/user";
 
 const RegisterPage = (props) => {
   const auth = getAuth();
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const dispatch = useDispatch('')
+  const dispatch = useDispatch("");
 
   const onJoinHanlder = (event) => {
     const {
@@ -29,11 +29,11 @@ const RegisterPage = (props) => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      console.log(email) //오류없이 여기까지는 찍힘 
-      dispatch(useremail(email))
-      console.log(email)
+      console.log(email); //오류없이 여기까지는 찍힘
+      dispatch(useremail(email));
+      console.log(email);
       navigate("/login");
-      alert("가입 되었습니다.")
+      alert("가입 되었습니다.");
     } catch (error) {
       alert("가입 실패" + error.message);
     }
@@ -100,6 +100,14 @@ const JoinForm = styled.form`
     min-height: 30px;
     padding: 0 10px 0 45px;
     height: 50px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.3s;
+    &:focus {
+      outline-style: solid;
+      outline-color: #d9dcfa;
+    }
   }
 `;
 const InputPw = styled.div`

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 const ButtonWrapper = styled.div`
-margin:10px 0;
+  margin: 10px 0;
 
   display: flex;
   justify-content: flex-end;
@@ -18,6 +18,14 @@ margin:10px 0;
     letter-spacing: -0.4px;
     width: 100%;
     cursor: pointer;
+    transition: all 0.1s ease-out 0s;
+    &:hover {
+      background-color: white;
+      color: #3747ff;
+      border: 1px solid #3747ff;
+      outline-style: solid;
+      outline-color: #d9dcfa;
+    }
   }
 `;
 function Button({ text, onClick = () => {} }) {

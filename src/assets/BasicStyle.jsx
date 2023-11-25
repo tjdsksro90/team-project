@@ -164,8 +164,7 @@ export const HeaderStyle = styled.div`
 
 // footer
 export const FooterBgStyle = styled.footer`
-  z-index: 999;
-  margin-top: 40px;
+  padding: 20px;
   background-color: #fff;
   border-top: 1px solid ${mainColor.gray1};
 `;
@@ -175,10 +174,15 @@ export const FooterStyle = styled.div`
   width: 1280px;
   max-width: 90%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 14px;
   color: ${mainColor.gray2};
+`;
+
+export const MemberWrapper = styled.div`
+  width: 100%;
 `;
 
 // basic
