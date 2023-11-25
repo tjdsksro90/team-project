@@ -15,17 +15,6 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import Modal from "react-modal";
 import { AiFillCloseCircle } from "react-icons/ai";
 
-const customModal = {
-  overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    zIndex: 10
-  },
-  content: {
-    WebkitOverflowScrolling: "touch",
-    padding: "30px"
-  }
-};
-
 function Mypage() {
   const navigate = useNavigate();
 
@@ -192,7 +181,12 @@ function Mypage() {
           </ul>
         </div>
       </Styled.BoxWrapBasic>
-      <Modal style={customModal} isOpen={modalSwitch} onRequestClose={() => editProfileCancel()} ariaHideApp={false}>
+      <Modal
+        style={Styled.customModal}
+        isOpen={modalSwitch}
+        onRequestClose={() => editProfileCancel()}
+        ariaHideApp={false}
+      >
         <AiFillCloseCircle
           style={{ color: Styled.mainColor.dark, cursor: "pointer" }}
           onClick={() => editProfileCancel()}
