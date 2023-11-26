@@ -259,7 +259,7 @@ function Mypage() {
                       right: "20px",
                       top: "20px"
                     }}
-                    onClick={() => editProfileCancel()}
+                    onClick={() => cancelEditWrite()}
                   />
                   <MypageStyled.MyItemEditEmail>{write.email}</MypageStyled.MyItemEditEmail>
                   <MypageStyled.MyItemEditText

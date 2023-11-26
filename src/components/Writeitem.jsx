@@ -74,6 +74,19 @@ const StItemWrap = styled.span`
     width: 100%;
   }
 `;
+
+export const StItemEditEmail = styled.div`
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+export const StItemEditText = styled.textarea`
+  border: 1px solid ${Styled.mainColor.gray2};
+  border-radius: 5px;
+  min-height: 200px;
+  padding: 10px;
+  resize: none;
+`;
 // [write.id, write.text, write.date];
 const Writeitem = ({ write, setWrites, userInfo }) => {
   const deleteWrite = async (event) => {
@@ -150,20 +163,28 @@ const Writeitem = ({ write, setWrites, userInfo }) => {
         ariaHideApp={false}
       >
         <AiFillCloseCircle
-          style={{ color: Styled.mainColor.dark, cursor: "pointer" }}
+          style={{
+            color: Styled.mainColor.dark,
+            cursor: "pointer",
+            position: "absolute",
+            right: "20px",
+            top: "20px"
+          }}
           onClick={() => cancelEditWrite()}
         />
-        <div>{write.email}</div>
-        <textarea
+        <StItemEditEmail>{write.email}</StItemEditEmail>
+        <StItemEditText
           type="text"
           placeholder="변경될 내용을 입력해주세요"
           value={writeTextEdit}
           onChange={onChangeText}
           required
         />
-        <button type="button" onClick={submitEditWrite}>
-          수정
-        </button>
+        <div style={{ marginTop: "auto", display: "flex", flexWrap: "wrap", gap: "5px" }}>
+          <Styled.BoxBtn width="100%" type="button" onClick={submitEditWrite}>
+            수정
+          </Styled.BoxBtn>
+        </div>
       </Modal>
     </>
   );
