@@ -36,7 +36,7 @@ function Header() {
             </svg>
           </Link>
         </h1>
-        <Styled.InputStyle type="text" placeholder="검색하기" color={Styled.mainColor} />
+        {/* <Styled.InputStyle type="text" placeholder="검색하기" color={Styled.mainColor} /> */}
         <Styled.BtnWrapMLAuto>
           {userTab ? (
             <>
