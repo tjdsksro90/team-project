@@ -89,21 +89,11 @@ const Writeitem = ({ write, setWrites, userInfo }) => {
     setModalSwitch(false);
   };
   return (
-    
-    <div key={write.id}>
-      <span>
-        <StId value={write.email} disabled></StId>
-        <StDate>{write.date}</StDate>
-        <br />
-        {write.text}
-        <StDeletButton onClick={deleteWrite}>X</StDeletButton>
-      </span>
-    </div>
     <>
       <div key={write.id}>
         <span>
-          <input value={write.email} disabled></input> {write.date}
-          {/* {write.id} */}
+          <StId value={write.email} disabled></StId>
+          <StDate>{write.date}</StDate>
           <br />
           {write.text}
           {userInfo !== null && write.uid === userInfo.uid ? (
@@ -139,6 +129,7 @@ const Writeitem = ({ write, setWrites, userInfo }) => {
         </button>
       </Modal>
     </>
+    //{" "}
   );
 };
 
