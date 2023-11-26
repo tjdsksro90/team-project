@@ -135,10 +135,20 @@ const Writeitem = ({ write, setWrites, userInfo }) => {
 
     setModalSwitch(false);
   };
+
+  // 리스트 상세보기 관련
+  const [modalDetailSwitch, setModalDetailSwitch] = useState(false);
+  const detailItem = () => {
+    setModalDetailSwitch(true);
+  };
+
+  const cancelDetail = () => {
+    setModalDetailSwitch(false);
+  };
   return (
     <>
       <div key={write.id}>
-        <StItemWrap>
+        <StItemWrap onClick={detailItem}>
           <p className="email">{write.email}</p>
           <p className="date">{write.date}</p>
           <p className="text">{write.text}</p>
@@ -155,6 +165,41 @@ const Writeitem = ({ write, setWrites, userInfo }) => {
             <div></div>
           )}
         </StItemWrap>
+        {/* detail modal */}
+        <Modal
+          style={Styled.customModal}
+          isOpen={modalDetailSwitch}
+          onRequestClose={() => cancelDetail()}
+          ariaHideApp={false}
+        >
+          <AiFillCloseCircle
+            style={{
+              color: Styled.mainColor.dark,
+              cursor: "pointer",
+              position: "absolute",
+              right: "20px",
+              top: "20px"
+            }}
+            onClick={() => cancelDetail()}
+          />
+          <StItemWrap>
+            <p className="email">{write.email}</p>
+            <p className="date">{write.date}</p>
+            {userInfo !== null && write.uid === userInfo.uid ? (
+              <div style={{}}>
+                <StEditButton onClick={() => editWrite(write)} style={{ position: "static" }}>
+                  <AiFillEdit />
+                </StEditButton>
+                <StDeletButton onClick={deleteWrite} style={{ position: "static" }}>
+                  <AiOutlineDelete />
+                </StDeletButton>
+              </div>
+            ) : (
+              <div></div>
+            )}
+            <p className="text">{write.text}</p>
+          </StItemWrap>
+        </Modal>
       </div>
       <Modal
         style={Styled.customModal}

@@ -233,6 +233,9 @@ export const BoxLeft = styled.div`
     flex-direction: column;
     gap: 10px;
     min-height: 400px;
+    @media ${device.laptop} {
+      min-height: auto;
+    }
   }
   > .box.mini {
     text-align: center;
