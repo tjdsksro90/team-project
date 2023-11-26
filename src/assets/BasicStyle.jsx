@@ -27,6 +27,8 @@ export const InputStyle = styled.input`
   padding: 6px 12px 6px 8px;
   border-radius: 10px;
   transition: all 0.3s;
+  width: ${(props) => props.width || "auto"};
+
   &:focus {
     outline-style: solid;
     outline-color: ${(props) => (props.line === "line" ? mainColor.light : mainColor.light)};
@@ -185,6 +187,9 @@ export const FooterStyle = styled.div`
 
 export const MemberWrapper = styled.div`
   width: 100%;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
 `;
 
 // basic
@@ -257,7 +262,16 @@ export const customModal = {
     zIndex: 10
   },
   content: {
+    width: "500px",
+    maxWidth: "90%",
+    height: "600px",
+    maxHeight: "90%",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%,-50%)",
     WebkitOverflowScrolling: "touch",
-    padding: "30px"
+    padding: "30px",
+    display: "flex",
+    flexDirection: "column"
   }
 };

@@ -11,9 +11,9 @@ import { auth, db, storage } from "../firebase";
 import { useNavigate } from "react-router";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 import { async } from "q";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
 import Modal from "react-modal";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillCloseCircle, AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 
 function Mypage() {
   const navigate = useNavigate();
@@ -150,40 +150,134 @@ function Mypage() {
 
   // modal 관련
   const [modalSwitch, setModalSwitch] = useState(false);
+  const [modalSwitch2, setModalSwitch2] = useState(false);
 
+  // 내 게시물 확인
+  const [writeTextEdit, setWriteTextEdit] = useState("");
+  const deleteWrite = async (write) => {
+    const writeRef = doc(db, "writes", write.id);
+    await deleteDoc(writeRef);
+
+    setWrites((prev) => {
+      return prev.filter((element) => element.id !== write.id);
+    });
+  };
+  // 게시물 수정
+  const editWrite = (write) => {
+    setModalSwitch2(true);
+    setWriteTextEdit(write.text);
+  };
+
+  // 게시물 수정 취소
+  const cancelEditWrite = () => {
+    setModalSwitch2(false);
+  };
+
+  // 게시물 수정 확인
+  const submitEditWrite = async (write) => {
+    if (writeTextEdit === write.text) return alert("기존 내용과 같습니다.");
+
+    const writeRef = doc(db, "writes", write.id);
+    await updateDoc(writeRef, { text: writeTextEdit });
+    setWrites((prev) => {
+      return prev.map((element) => {
+        if (element.id === write.id) {
+          return { ...element, text: writeTextEdit };
+        } else {
+          return element;
+        }
+      });
+    });
+
+    setModalSwitch2(false);
+  };
+
+  // 게시물 수정 텍스트 확인
+  const onChangeText = (event) => {
+    setWriteTextEdit(event.target.value);
+  };
   return (
     <Styled.BoxWrapBg>
+      <MypageStyled.MypageBg></MypageStyled.MypageBg>
       <Styled.BoxWrapBasic>
-        <div>
-          <div>배경</div>
-          <div>
+        <MypageStyled.MypageWrap>
+          <MypageStyled.Mypage>
             <MypageStyled.MyapgeImgWrap>
               <MypageStyled.MypageImg>
                 <Styled.ImgWidth src={profileImg} alt="" />
               </MypageStyled.MypageImg>
             </MypageStyled.MyapgeImgWrap>
-
-            <div>이메일 : {profileEmail}</div>
-            <div>닉네임 : {profileName}</div>
-          </div>
-          <Styled.BoxBtn type="button" onClick={editProfileHandler}>
-            프로필 수정
-          </Styled.BoxBtn>
-        </div>
-        <div>
-          <div>
-            <button type="button">게시글</button>
-            <button type="button">답글</button>
-            <button type="button">보관함</button>
-          </div>
-          <ul>
-            {writes
-              .filter((write) => write.uid === userId)
-              .map((write, index) => (
-                <li key={index}>{write.text}</li>
-              ))}
-          </ul>
-        </div>
+            <MypageStyled.MypageTxtWrap>
+              <MypageStyled.MypageTxt>
+                <span className="title">이메일</span>
+                <span className="desc">{profileEmail}</span>
+              </MypageStyled.MypageTxt>
+              <MypageStyled.MypageTxt>
+                <span className="title">닉네임</span>
+                <span className="desc">{profileName == null || profileName === "" ? "-" : profileName}</span>
+              </MypageStyled.MypageTxt>
+            </MypageStyled.MypageTxtWrap>
+            <MypageStyled.EditButton>
+              <Styled.BoxBtn type="button" onClick={editProfileHandler}>
+                프로필 수정
+              </Styled.BoxBtn>
+            </MypageStyled.EditButton>
+          </MypageStyled.Mypage>
+        </MypageStyled.MypageWrap>
+        <MypageStyled.MypageTab>
+          <span>내 게시물</span>
+        </MypageStyled.MypageTab>
+        <MypageStyled.MypageWrapSecond>
+          {writes
+            .filter((write) => write.uid === userId)
+            .map((write, index) => (
+              <MypageStyled.MyItemWrap key={index}>
+                <MypageStyled.MyItem>
+                  <p className="email">{write.email}</p>
+                  <p className="date">{write.date}</p>
+                  <p className="text">{write.text}</p>
+                  <div>
+                    <MypageStyled.MyEditButton onClick={() => editWrite(write)}>
+                      <AiFillEdit />
+                    </MypageStyled.MyEditButton>
+                    <MypageStyled.MyDeleteButton onClick={() => deleteWrite(write)}>
+                      <AiOutlineDelete />
+                    </MypageStyled.MyDeleteButton>
+                  </div>
+                </MypageStyled.MyItem>
+                <Modal
+                  style={Styled.customModal}
+                  isOpen={modalSwitch2}
+                  onRequestClose={() => cancelEditWrite()}
+                  ariaHideApp={false}
+                >
+                  <AiFillCloseCircle
+                    style={{
+                      color: Styled.mainColor.dark,
+                      cursor: "pointer",
+                      position: "absolute",
+                      right: "20px",
+                      top: "20px"
+                    }}
+                    onClick={() => editProfileCancel()}
+                  />
+                  <MypageStyled.MyItemEditEmail>{write.email}</MypageStyled.MyItemEditEmail>
+                  <MypageStyled.MyItemEditText
+                    type="text"
+                    placeholder="변경될 내용을 입력해주세요"
+                    value={writeTextEdit}
+                    onChange={onChangeText}
+                    required
+                  />
+                  <div style={{ marginTop: "auto", display: "flex", flexWrap: "wrap", gap: "5px" }}>
+                    <Styled.BoxBtn width="100%" type="button" onClick={() => submitEditWrite(write)}>
+                      수정
+                    </Styled.BoxBtn>
+                  </div>
+                </Modal>
+              </MypageStyled.MyItemWrap>
+            ))}
+        </MypageStyled.MypageWrapSecond>
       </Styled.BoxWrapBasic>
       <Modal
         style={Styled.customModal}
@@ -192,27 +286,26 @@ function Mypage() {
         ariaHideApp={false}
       >
         <AiFillCloseCircle
-          style={{ color: Styled.mainColor.dark, cursor: "pointer" }}
+          style={{ color: Styled.mainColor.dark, cursor: "pointer", position: "absolute", right: "20px", top: "20px" }}
           onClick={() => editProfileCancel()}
         />
-        <div>
-          <div>배경</div>
-          <div>
-            <div>
-              <h2>프로필</h2>
-            </div>
-            <MypageStyled.MyapgeImgWrap>
-              <MypageStyled.MypageImg>
-                <MypageStyled.MypageLabel htmlFor="profileInput"></MypageStyled.MypageLabel>
-                <MypageStyled.MypageInput id="profileInput" type="file" onChange={handleFileSelect} />
-                <Styled.ImgWidth src={profileImgChange} alt="" />
-              </MypageStyled.MypageImg>
-            </MypageStyled.MyapgeImgWrap>
-
-            <div>이메일 : {profileEmail}</div>
-            <div>
-              닉네임 :
-              <input
+        <MypageStyled.MyapgeImgWrap>
+          <MypageStyled.MypageImg>
+            <MypageStyled.MypageLabel htmlFor="profileInput"></MypageStyled.MypageLabel>
+            <MypageStyled.MypageInput id="profileInput" type="file" onChange={handleFileSelect} />
+            <Styled.ImgWidth src={profileImgChange} alt="" />
+          </MypageStyled.MypageImg>
+        </MypageStyled.MyapgeImgWrap>
+        <MypageStyled.MypageTxtWrap>
+          <MypageStyled.MypageTxt>
+            <span className="title">이메일</span>
+            <span className="desc">{profileEmail}</span>
+          </MypageStyled.MypageTxt>
+          <MypageStyled.MypageTxt>
+            <span className="title">닉네임</span>
+            <span className="desc">
+              <Styled.InputStyle
+                width="100%"
                 type="text"
                 placeholder="닉네임"
                 color={Styled.mainColor}
@@ -220,14 +313,15 @@ function Mypage() {
                 onChange={changeHandler}
                 maxLength={20}
               />
-            </div>
-            <div>한마디</div>
-          </div>
-          <Styled.BoxBtn type="button" onClick={editProfileChange}>
-            저장
-          </Styled.BoxBtn>
-          <Styled.BoxBtn line="line" type="button" onClick={editProfileCancel}>
+            </span>
+          </MypageStyled.MypageTxt>
+        </MypageStyled.MypageTxtWrap>
+        <div style={{ marginTop: "auto", display: "flex", flexWrap: "wrap", gap: "5px" }}>
+          <Styled.BoxBtn width="100%" line="line" type="button" onClick={editProfileCancel}>
             취소
+          </Styled.BoxBtn>
+          <Styled.BoxBtn width="100%" type="button" onClick={editProfileChange}>
+            저장
           </Styled.BoxBtn>
         </div>
       </Modal>

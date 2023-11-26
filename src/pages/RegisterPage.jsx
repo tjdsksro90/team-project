@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import Button from "components/common/Button";
 import React, { useState } from "react";
 import styled from "styled-components";
+import * as Styled from "assets/BasicStyle";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { useremail } from "redux/modules/user";
@@ -40,30 +41,34 @@ const RegisterPage = (props) => {
   };
 
   return (
-    <Container>
-      <LogoBox>
-        <Title>회원가입</Title>
-      </LogoBox>
-      <FormWrapper>
-        <JoinForm onSubmit={onSubmitHandler}>
-          <InputEmail>
-            <input type="email" value={email} onChange={onJoinHanlder} name="email" placeholder="이메일" />
-          </InputEmail>
-          <InputPw>
-            <input
-              type="password"
-              value={password}
-              onChange={onJoinHanlder}
-              name="password"
-              autoComplete="off"
-              placeholder="비밀번호"
-            />
-          </InputPw>
+    <Styled.BoxWrapBg>
+      <Styled.BoxWrap>
+        <Container>
+          <LogoBox>
+            <Title>회원가입</Title>
+          </LogoBox>
+          <FormWrapper>
+            <JoinForm onSubmit={onSubmitHandler}>
+              <InputEmail>
+                <input type="email" value={email} onChange={onJoinHanlder} name="email" placeholder="이메일" />
+              </InputEmail>
+              <InputPw>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={onJoinHanlder}
+                  name="password"
+                  autoComplete="off"
+                  placeholder="비밀번호"
+                />
+              </InputPw>
 
-          <Button text="회원가입" />
-        </JoinForm>
-      </FormWrapper>
-    </Container>
+              <Button text="회원가입" />
+            </JoinForm>
+          </FormWrapper>
+        </Container>
+      </Styled.BoxWrap>
+    </Styled.BoxWrapBg>
   );
 };
 
