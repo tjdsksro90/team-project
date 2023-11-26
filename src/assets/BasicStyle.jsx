@@ -118,6 +118,7 @@ export const RountImg = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 `;
 export const ImgWidth = styled.img`
   width: 100%;

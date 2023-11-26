@@ -72,6 +72,7 @@ const StItemWrap = styled.span`
   }
   > .text {
     width: 100%;
+    word-break: break-all;
   }
 `;
 
