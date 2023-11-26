@@ -7,12 +7,23 @@ import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import Test from "./Test";
 import moment from "moment/moment";
+import { useNavigate } from "react-router";
 
 const StWriteWrap = styled.div`
   position: relative;
 `;
 
 const StInputWrite = styled.input`
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  padding: 0px 10px 0px 10px;
+  border: 0px;
+  background-color: #bac4cc;
+  cursor: pointer;
+`;
+
+const StInputWriteBtn = styled.button`
   width: 100%;
   height: 40px;
   border-radius: 10px;
@@ -50,7 +61,8 @@ const StTest = styled.div`
   -webkit-box-orient: vertical;
 `;
 
-const Write = () => {
+const Write = ({ userInfo }) => {
+  const navigate = useNavigate();
   const [writes, setWrites] = useState([]);
 
   // 파이어 베이스 데이터 읽기
@@ -93,7 +105,13 @@ const Write = () => {
     if (text === "") {
       alert("내용을 입력해주세요");
     } else {
-      const newWrite = { email: auth.currentUser.email, text: text, date: formatDate, fullDate: formatFullDate };
+      const newWrite = {
+        email: auth.currentUser.email,
+        text: text,
+        date: formatDate,
+        fullDate: formatFullDate,
+        uid: auth.currentUser.uid
+      };
       const collectionRef = collection(db, "writes");
       const a = await addDoc(collectionRef, newWrite);
       setWrites((prev) => {
@@ -103,27 +121,38 @@ const Write = () => {
     }
   };
 
+  // 유저 정보 유무 파악
+  const linkLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <div>
       <br />
-      <form>
-        <StWriteWrap>
-          <StInputWrite
-            type="text"
-            value={text}
-            name="text"
-            onChange={onChange}
-            placeholder="내용을 입력해주세요"
-            required
-          ></StInputWrite>
-          <StWriteButton onClick={addWrite}>입력</StWriteButton>
-        </StWriteWrap>
-      </form>
+      {userInfo === null ? (
+        <StInputWriteBtn type="button" onClick={linkLogin}>
+          로그인을 해주세요
+        </StInputWriteBtn>
+      ) : (
+        <form>
+          <StWriteWrap>
+            <StInputWrite
+              type="text"
+              value={text}
+              name="text"
+              onChange={onChange}
+              placeholder="내용을 입력해주세요"
+              required
+            ></StInputWrite>
+            <StWriteButton onClick={addWrite}>입력</StWriteButton>
+          </StWriteWrap>
+        </form>
+      )}
       <h3>내용</h3>
       {writes.map((write) => {
         return (
           <StTest>
-            <Writeitem key={write.id} write={write} setWrites={setWrites} />
+            <Writeitem key={write.id} write={write} setWrites={setWrites} userInfo={userInfo} />
           </StTest>
         );
       })}

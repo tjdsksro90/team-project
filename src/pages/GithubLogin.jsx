@@ -2,6 +2,7 @@ import { auth, githubProvider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import styled from "styled-components";
 
 function GithubLogin() {
   const navigate = useNavigate();
@@ -18,19 +19,27 @@ function GithubLogin() {
       });
   };
 
-  const handleGithubLogout = () => {
+  /*  const handleGithubLogout = () => {
     setUser(null);
-  };
+  }; */
 
   return (
     <div>
-      {user ? (
-        <button onClick={handleGithubLogout}>Github 로그아웃</button>
-      ) : (
-        <button onClick={handleGithubLogin}>Github 로그인</button>
-      )}
+      <Github onClick={handleGithubLogin}>
+        <img
+          src="https://github.com/tjdsksro90/team-project/blob/merge/src/assets/images/github.png?raw=true"
+          alt="github"
+          width="40px"
+        />
+      </Github>
     </div>
   );
 }
 
 export default GithubLogin;
+
+const Github = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
