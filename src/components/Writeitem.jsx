@@ -153,7 +153,7 @@ const Writeitem = ({ write, setWrites, userInfo }) => {
           <p className="email">{write.email}</p>
           <p className="date">{write.date}</p>
           <p className="text">{write.text}</p>
-          {userInfo !== null && write.uid === userInfo.uid ? (
+          {/* {userInfo !== null && write.uid === userInfo.uid ? (
             <div>
               <StEditButton onClick={() => editWrite(write)}>
                 <AiFillEdit />
@@ -164,7 +164,7 @@ const Writeitem = ({ write, setWrites, userInfo }) => {
             </div>
           ) : (
             <div></div>
-          )}
+          )} */}
         </StItemWrap>
         {/* detail modal */}
         <Modal
