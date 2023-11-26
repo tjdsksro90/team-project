@@ -4,25 +4,75 @@ import { db } from "../firebase";
 import styled from "styled-components";
 import * as Styled from "assets/BasicStyle";
 import Modal from "react-modal";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillCloseCircle, AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 
 const StDeletButton = styled.button`
   position: absolute;
-  top: 1%;
+  top: 5%;
   right: 1%;
   border: 0px;
   cursor: pointer;
-  font-size: 14px;
   font-weight: bold;
+  background-color: transparent;
+  font-size: 18px;
+  transition: all 0.2s;
+  &:hover {
+    svg {
+      path {
+        fill: ${Styled.mainColor.basic};
+      }
+    }
+  }
+  &:active {
+    svg {
+      path {
+        fill: ${Styled.mainColor.light};
+      }
+    }
+  }
 `;
 const StEditButton = styled.button`
   position: absolute;
-  top: 1%;
-  right: 4%;
+  top: 5%;
+  right: 5%;
   border: 0px;
   cursor: pointer;
-  font-size: 14px;
   font-weight: bold;
+  background-color: transparent;
+  font-size: 18px;
+  transition: all 0.2s;
+  &:hover {
+    svg {
+      path {
+        fill: ${Styled.mainColor.basic};
+      }
+    }
+  }
+  &:active {
+    svg {
+      path {
+        fill: ${Styled.mainColor.light};
+      }
+    }
+  }
+`;
+
+const StItemWrap = styled.span`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px 10px;
+  align-items: center;
+  > .email {
+    font-weight: bold;
+    color: ${Styled.mainColor.dark};
+  }
+  > .date {
+    font-size: 12px;
+    color: ${Styled.mainColor.gray2};
+  }
+  > .text {
+    width: 100%;
+  }
 `;
 // [write.id, write.text, write.date];
 const Writeitem = ({ write, setWrites, userInfo }) => {
@@ -75,20 +125,23 @@ const Writeitem = ({ write, setWrites, userInfo }) => {
   return (
     <>
       <div key={write.id}>
-        <span>
-          <input value={write.email} disabled></input> {write.date}
-          {/* {write.id} */}
-          <br />
-          {write.text}
+        <StItemWrap>
+          <p className="email">{write.email}</p>
+          <p className="date">{write.date}</p>
+          <p className="text">{write.text}</p>
           {userInfo !== null && write.uid === userInfo.uid ? (
-            <>
-              <StEditButton onClick={() => editWrite(write)}>edit</StEditButton>
-              <StDeletButton onClick={deleteWrite}>X</StDeletButton>
-            </>
+            <div>
+              <StEditButton onClick={() => editWrite(write)}>
+                <AiFillEdit />
+              </StEditButton>
+              <StDeletButton onClick={deleteWrite}>
+                <AiOutlineDelete />
+              </StDeletButton>
+            </div>
           ) : (
             <div></div>
           )}
-        </span>
+        </StItemWrap>
       </div>
       <Modal
         style={Styled.customModal}

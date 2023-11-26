@@ -88,6 +88,8 @@ export const BoxBtn = styled.button`
   background-color: ${(props) => (props.line === "line" ? "#fff" : mainColor.light)};
   color: ${mainColor.basic};
   width: ${(props) => props.width || "auto"};
+  height: ${(props) => props.height || "auto"};
+  margin: ${(props) => props.margin || "0"};
   transition: all 0.1s ease-out 0s;
   &:hover {
     background-color: ${(props) => (props.line === "line" ? "#fff" : "#fff")};
@@ -110,7 +112,7 @@ export const RountImg = styled.span`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: #ccc;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -194,7 +196,7 @@ export const BoxWrapBg = styled.div`
 export const BoxWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding-bottom: 30px;
+  padding-bottom: 150px;
   max-width: 1280px;
   width: 90%;
   margin: 0 auto;
@@ -219,7 +221,21 @@ export const BoxLeft = styled.div`
   border-radius: 10px;
   padding: 15px 20px;
   position: fixed;
-  min-height: 200px;
+  width: 256px;
+  > .box {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 400px;
+  }
+  > .box.mini {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 20px;
+  }
   @media ${device.laptop} {
     position: static;
     width: 100%;

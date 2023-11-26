@@ -11,7 +11,7 @@ import { auth, db, storage } from "../firebase";
 import { useNavigate } from "react-router";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 import { async } from "q";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import Modal from "react-modal";
 import { AiFillCloseCircle } from "react-icons/ai";
 
@@ -126,19 +126,23 @@ function Mypage() {
   ///////
 
   // 내 게시물 확인
-  const [todos, setTodos] = useState([]);
+  const [writes, setWrites] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const q = query(collection(db, "todos"));
+      const q = query(collection(db, "writes"), orderBy("fullDate", "desc"));
       const querySnapshot = await getDocs(q);
-      const initialTodos = [];
+      const initialWrites = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc, "docccccccccccccc");
-        initialTodos.push({ id: doc.id, ...doc.data() });
+        const data = {
+          id: doc.id,
+          ...doc.data()
+        };
+
+        initialWrites.push(data);
       });
 
       // firestore에서 가져온 데이터를 state에 전달
-      setTodos(initialTodos);
+      setWrites(initialWrites);
     };
 
     fetchData();
@@ -173,10 +177,10 @@ function Mypage() {
             <button type="button">보관함</button>
           </div>
           <ul>
-            {todos
-              .filter((todo) => todo.id === `"${userId}"`)
-              .map((todo, index) => (
-                <li key={index}>{todo.text}</li>
+            {writes
+              .filter((write) => write.uid === userId)
+              .map((write, index) => (
+                <li key={index}>{write.text}</li>
               ))}
           </ul>
         </div>

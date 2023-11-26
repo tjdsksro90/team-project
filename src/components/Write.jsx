@@ -3,55 +3,108 @@ import Writeitem from "./Writeitem";
 import { collection, query, getDocs, addDoc, Timestamp, orderBy } from "firebase/firestore";
 import { db } from "../firebase";
 import styled from "styled-components";
+import * as Styled from "assets/BasicStyle";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import Test from "./Test";
 import moment from "moment/moment";
 import { useNavigate } from "react-router";
+import { AiOutlineSearch } from "react-icons/ai";
+
+const StWriteTop = styled.div`
+  font-size: 14px;
+  margin-bottom: 10px;
+`;
 
 const StWriteWrap = styled.div`
   position: relative;
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
 `;
 
 const StInputWrite = styled.input`
-  width: 100%;
+  flex: 1;
   height: 40px;
   border-radius: 10px;
-  padding: 0px 10px 0px 10px;
   border: 0px;
-  background-color: #bac4cc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid ${Styled.mainColor.gray2};
+  outline: none;
+  font-size: 13px;
+  background-color: ${Styled.mainColor.gray1};
+  color: #000;
+  padding: 6px 12px 6px 12px;
+  border-radius: 10px;
+  transition: all 0.3s;
   cursor: pointer;
+  outline-style: solid;
+  outline-color: transparent;
+  &:hover {
+    outline-style: solid;
+    outline-color: ${(props) => (props.line === "line" ? Styled.mainColor.light : Styled.mainColor.light)};
+  }
+  &:focus {
+    outline-style: solid;
+    outline-color: ${(props) => (props.line === "line" ? Styled.mainColor.light : Styled.mainColor.light)};
+  }
 `;
 
-const StInputWriteBtn = styled.button`
+const StInputWriteBtn = styled.input`
   width: 100%;
   height: 40px;
   border-radius: 10px;
-  padding: 0px 10px 0px 10px;
   border: 0px;
-  background-color: #bac4cc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid ${Styled.mainColor.gray2};
+  outline: none;
+  font-size: 13px;
+  background-color: ${Styled.mainColor.gray1};
+  color: #000;
+  padding: 6px 12px 6px 12px;
+  border-radius: 10px;
+  transition: all 0.3s;
+  cursor: pointer;
+  outline-style: solid;
+  outline-color: transparent;
+  margin-bottom: 30px;
+  &:hover {
+    outline-style: solid;
+    outline-color: ${(props) => (props.line === "line" ? Styled.mainColor.light : Styled.mainColor.light)};
+  }
+  &:focus {
+    outline-style: solid;
+    outline-color: ${(props) => (props.line === "line" ? Styled.mainColor.light : Styled.mainColor.light)};
+  }
 `;
 
 const StWriteButton = styled.button`
-  background-color: #bac4cc;
+  background-color: transparent;
   border: 0px;
   font-size: 17px;
   position: absolute;
   border-radius: 10px;
-  right: -14px;
-  top: 8%;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
   padding: 3px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StTest = styled.div`
   position: relative;
   overflow: hidden;
-  border: 2px solid black;
+  /* border: 2px solid black; */
   border-radius: 20px;
-  padding: 20px 10px 10px 10px;
+  padding: 20px;
   width: 100%;
-  height: 200px;
   margin: 10px 0px;
   word-wrap: break-word;
   display: -webkit-box;
@@ -59,9 +112,23 @@ const StTest = styled.div`
   height: 9em;
   -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
+  background: #fff;
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: rgb(255, 255, 255);
+    background: -moz-linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
+  }
 `;
 
-const Write = ({ userInfo }) => {
+const Write = ({ userInfo, profileImg }) => {
   const navigate = useNavigate();
   const [writes, setWrites] = useState([]);
 
@@ -128,14 +195,15 @@ const Write = ({ userInfo }) => {
 
   return (
     <div>
-      <br />
+      <StWriteTop>오늘 할 이야기가 뭔가요?</StWriteTop>
       {userInfo === null ? (
-        <StInputWriteBtn type="button" onClick={linkLogin}>
-          로그인을 해주세요
-        </StInputWriteBtn>
+        <StInputWriteBtn onClick={linkLogin} placeholder="로그인을 해주세요" />
       ) : (
         <form>
           <StWriteWrap>
+            <Styled.RountImg>
+              <Styled.ImgWidth src={profileImg} alt="" />
+            </Styled.RountImg>
             <StInputWrite
               type="text"
               value={text}
@@ -144,11 +212,12 @@ const Write = ({ userInfo }) => {
               placeholder="내용을 입력해주세요"
               required
             ></StInputWrite>
-            <StWriteButton onClick={addWrite}>입력</StWriteButton>
+            <StWriteButton onClick={addWrite}>
+              <AiOutlineSearch />
+            </StWriteButton>
           </StWriteWrap>
         </form>
       )}
-      <h3>내용</h3>
       {writes.map((write) => {
         return (
           <StTest>
