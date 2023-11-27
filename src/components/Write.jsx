@@ -10,6 +10,7 @@ import Test from "./Test";
 import moment from "moment/moment";
 import { useNavigate } from "react-router";
 import { AiOutlineSearch } from "react-icons/ai";
+import { useRef } from "react";
 
 const StWriteTop = styled.div`
   font-size: 14px;
@@ -36,7 +37,7 @@ const StInputWrite = styled.input`
   font-size: 13px;
   background-color: ${Styled.mainColor.gray1};
   color: #000;
-  padding: 6px 12px 6px 12px;
+  padding: 6px 40px 6px 12px;
   border-radius: 10px;
   transition: all 0.3s;
   cursor: pointer;
