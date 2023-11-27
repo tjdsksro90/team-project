@@ -114,6 +114,16 @@ const StTest = styled.div`
   -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
   background: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline-style: solid;
+  outline-color: transparent;
+  &:hover {
+    outline-color: ${Styled.mainColor.light};
+  }
+  &:active {
+    outline-color: ${Styled.mainColor.light};
+  }
   &:after {
     content: "";
     position: absolute;

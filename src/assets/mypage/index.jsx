@@ -34,9 +34,12 @@ export const MypageTab = styled.div`
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 45%;
+    width: 40%;
     height: 1px;
     background-color: ${Basic.mainColor.dark};
+    @media ${Basic.device.laptop} {
+      width: 30%;
+    }
   }
   &:after {
     content: "";
@@ -44,9 +47,12 @@ export const MypageTab = styled.div`
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 45%;
+    width: 40%;
     height: 1px;
     background-color: ${Basic.mainColor.dark};
+    @media ${Basic.device.laptop} {
+      width: 30%;
+    }
   }
 `;
 export const MyapgeImgWrap = styled.div`
@@ -132,8 +138,34 @@ export const MyItemWrap = styled.div`
   margin: 10px 0px;
   word-wrap: break-word;
   display: -webkit-box;
+  height: 9em;
   line-height: 1.2;
   background: #fff;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline-style: solid;
+  outline-color: transparent;
+  &:hover {
+    outline-color: ${Basic.mainColor.light};
+  }
+  &:active {
+    outline-color: ${Basic.mainColor.light};
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: rgb(255, 255, 255);
+    background: -moz-linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
+  }
 `;
 
 export const MyItem = styled.span`
@@ -152,6 +184,7 @@ export const MyItem = styled.span`
   > .text {
     width: 100%;
     text-align: left;
+    word-break: break-all;
   }
 `;
 

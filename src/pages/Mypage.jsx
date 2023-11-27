@@ -98,16 +98,16 @@ function Mypage() {
 
   // 프로필 수정 확인
   const editProfileChange = async () => {
-    // ref 함수를 이용해서 Storage 내부 저장할 위치를 지정하고, uploadBytes 함수를 이용해서 파일을 저장합니다.
-    // const imageRef = ref(storage, `profile/${auth.currentUser.uid}/${selectedFile.name}`);
-    const imageRef = ref(storage, `profile/${auth.currentUser.uid}/${selectedFile.name}`);
-    await uploadBytes(imageRef, selectedFile);
-
-    // 파일 URL 가져오기
-    const downloadURL = await getDownloadURL(imageRef);
+    console.log(selectedFile);
+    let downloadURL = null;
+    if (selectedFile != null) {
+      // ref 함수를 이용해서 Storage 내부 저장할 위치를 지정하고, uploadBytes 함수를 이용해서 파일을 저장합니다.
+      const imageRef = ref(storage, `profile/${auth.currentUser.uid}/${selectedFile.name}`);
+      await uploadBytes(imageRef, selectedFile);
+      // 파일 URL 가져오기
+      downloadURL = await getDownloadURL(imageRef);
+    }
     updateProfileHandler(desc, downloadURL);
-
-    console.log(auth.currentUser, "<<<<<<<<<<auth.currentUser<<<<<<<<<<<<");
 
     setModalSwitch(false);
   };
@@ -150,7 +150,7 @@ function Mypage() {
 
   // modal 관련
   const [modalSwitch, setModalSwitch] = useState(false);
-  const [modalSwitch2, setModalSwitch2] = useState(false);
+  const [modalSwitchMyWrite, setModalSwitchMyWrite] = useState(false);
 
   // 내 게시물 확인
   const [writeTextEdit, setWriteTextEdit] = useState("");
@@ -164,13 +164,13 @@ function Mypage() {
   };
   // 게시물 수정
   const editWrite = (write) => {
-    setModalSwitch2(true);
+    setModalSwitchMyWrite(true);
     setWriteTextEdit(write.text);
   };
 
   // 게시물 수정 취소
   const cancelEditWrite = () => {
-    setModalSwitch2(false);
+    setModalSwitchMyWrite(false);
   };
 
   // 게시물 수정 확인
@@ -189,13 +189,27 @@ function Mypage() {
       });
     });
 
-    setModalSwitch2(false);
+    setModalSwitchMyWrite(false);
+    setModalDetailSwitch(false);
   };
 
   // 게시물 수정 텍스트 확인
   const onChangeText = (event) => {
     setWriteTextEdit(event.target.value);
   };
+
+  // 리스트 상세보기 관련
+  const [modalDetailSwitch, setModalDetailSwitch] = useState(false);
+  const [modalDetailContent, setModalDetailContent] = useState({});
+  const detailItem = (write) => {
+    setModalDetailSwitch(true);
+    setModalDetailContent({ id: write.id, email: write.email, date: write.date, text: write.text });
+  };
+
+  const cancelDetail = () => {
+    setModalDetailSwitch(false);
+  };
+
   return (
     <Styled.BoxWrapBg>
       <MypageStyled.MypageBg></MypageStyled.MypageBg>
@@ -232,52 +246,81 @@ function Mypage() {
             .filter((write) => write.uid === userId)
             .map((write, index) => (
               <MypageStyled.MyItemWrap key={index}>
-                <MypageStyled.MyItem>
+                <MypageStyled.MyItem onClick={() => detailItem(write)}>
                   <p className="email">{write.email}</p>
                   <p className="date">{write.date}</p>
                   <p className="text">{write.text}</p>
-                  <div>
+                  {/* <div>
                     <MypageStyled.MyEditButton onClick={() => editWrite(write)}>
                       <AiFillEdit />
                     </MypageStyled.MyEditButton>
                     <MypageStyled.MyDeleteButton onClick={() => deleteWrite(write)}>
                       <AiOutlineDelete />
                     </MypageStyled.MyDeleteButton>
-                  </div>
+                  </div> */}
                 </MypageStyled.MyItem>
-                <Modal
-                  style={Styled.customModal}
-                  isOpen={modalSwitch2}
-                  onRequestClose={() => cancelEditWrite()}
-                  ariaHideApp={false}
-                >
-                  <AiFillCloseCircle
-                    style={{
-                      color: Styled.mainColor.dark,
-                      cursor: "pointer",
-                      position: "absolute",
-                      right: "20px",
-                      top: "20px"
-                    }}
-                    onClick={() => cancelEditWrite()}
-                  />
-                  <MypageStyled.MyItemEditEmail>{write.email}</MypageStyled.MyItemEditEmail>
-                  <MypageStyled.MyItemEditText
-                    type="text"
-                    placeholder="변경될 내용을 입력해주세요"
-                    value={writeTextEdit}
-                    onChange={onChangeText}
-                    required
-                  />
-                  <div style={{ marginTop: "auto", display: "flex", flexWrap: "wrap", gap: "5px" }}>
-                    <Styled.BoxBtn width="100%" type="button" onClick={() => submitEditWrite(write)}>
-                      수정
-                    </Styled.BoxBtn>
-                  </div>
-                </Modal>
               </MypageStyled.MyItemWrap>
             ))}
         </MypageStyled.MypageWrapSecond>
+        {/* detail modal */}
+        <Modal
+          style={Styled.customModal}
+          isOpen={modalDetailSwitch}
+          onRequestClose={() => cancelDetail()}
+          ariaHideApp={false}
+        >
+          <AiFillCloseCircle
+            style={{
+              color: Styled.mainColor.dark,
+              cursor: "pointer",
+              position: "absolute",
+              right: "20px",
+              top: "20px"
+            }}
+            onClick={() => cancelDetail()}
+          />
+          <MypageStyled.MyItem>
+            <p className="email">{modalDetailContent.email}</p>
+            <p className="date">{modalDetailContent.date}</p>
+            <MypageStyled.MyEditButton onClick={() => editWrite(modalDetailContent)} style={{ position: "static" }}>
+              <AiFillEdit />
+            </MypageStyled.MyEditButton>
+            <MypageStyled.MyDeleteButton onClick={() => deleteWrite(modalDetailContent)} style={{ position: "static" }}>
+              <AiOutlineDelete />
+            </MypageStyled.MyDeleteButton>
+            <p className="text">{modalDetailContent.text}</p>
+          </MypageStyled.MyItem>
+        </Modal>
+        <Modal
+          style={Styled.customModal}
+          isOpen={modalSwitchMyWrite}
+          onRequestClose={() => cancelEditWrite()}
+          ariaHideApp={false}
+        >
+          <AiFillCloseCircle
+            style={{
+              color: Styled.mainColor.dark,
+              cursor: "pointer",
+              position: "absolute",
+              right: "20px",
+              top: "20px"
+            }}
+            onClick={() => cancelEditWrite()}
+          />
+          <MypageStyled.MyItemEditEmail>{modalDetailContent.email}</MypageStyled.MyItemEditEmail>
+          <MypageStyled.MyItemEditText
+            type="text"
+            placeholder="변경될 내용을 입력해주세요"
+            value={writeTextEdit}
+            onChange={onChangeText}
+            required
+          />
+          <div style={{ marginTop: "auto", display: "flex", flexWrap: "wrap", gap: "5px" }}>
+            <Styled.BoxBtn width="100%" type="button" onClick={() => submitEditWrite(modalDetailContent)}>
+              수정
+            </Styled.BoxBtn>
+          </div>
+        </Modal>
       </Styled.BoxWrapBasic>
       <Modal
         style={Styled.customModal}
